@@ -24,31 +24,55 @@ export class ProductsService {
   }
 
 async create(createProductDto: CreateProductDto): Promise<Product> {
-
+  
   if (!createProductDto.name || createProductDto.name.trim() === '') {
+    throw new BadRequestException('El nombre del producto es obligatorio');
+  }
+
+  if (!createProductDto.category || createProductDto.category.trim() === '') {
+    throw new BadRequestException('La categoría del producto es obligatoria');
+  }
+
+  if (createProductDto.quantity < 0) {
+    throw new BadRequestException('La cantidad no puede ser negativa');
+  }
+
+  if (createProductDto.price < 0) {
+    throw new BadRequestException('El precio no puede ser negativo');
+  }
+
+  // Mantenimiento preventivo: limitar entradas y bloquear texto sospechoso
+  const suspiciousPattern =
+    /<script|<\/script>|SELECT|DROP|INSERT|DELETE|UPDATE|--/i;
+
+  if (createProductDto.name.length > 100) {
     throw new BadRequestException(
-      'El nombre del producto es obligatorio',
+      'El nombre no puede superar los 100 caracteres',
+    );
+  }
+
+  if (createProductDto.category.length > 50) {
+    throw new BadRequestException(
+      'La categoría no puede superar los 50 caracteres',
     );
   }
 
   if (
-    !createProductDto.category ||
-    createProductDto.category.trim() === ''
+    createProductDto.description &&
+    createProductDto.description.length > 300
   ) {
     throw new BadRequestException(
-      'La categoría del producto es obligatoria',
+      'La descripción no puede superar los 300 caracteres',
     );
   }
 
-  if (createProductDto.quantity < 0) {
+  if (
+    suspiciousPattern.test(createProductDto.name) ||
+    suspiciousPattern.test(createProductDto.category) ||
+    suspiciousPattern.test(createProductDto.description || '')
+  ) {
     throw new BadRequestException(
-      'La cantidad no puede ser negativa',
-    );
-  }
-
-  if (createProductDto.price < 0) {
-    throw new BadRequestException(
-      'El precio no puede ser negativo',
+      'El producto contiene texto no permitido por seguridad',
     );
   }
 
