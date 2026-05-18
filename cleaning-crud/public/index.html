@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧹 CRUD Productos de Limpieza</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🧹 Sistema de Gestión de Productos de Limpieza</h1>
+                <p class="subtitle">Integrado con EPN Event Manager</p>
+            </div>
+            <div class="status-bar">
+                <div class="status-item">
+                    <span class="status-label">CRUD:</span>
+                    <span id="crudStatus" class="status-badge loading">Verificando...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Event Manager:</span>
+                    <span id="hubStatus" class="status-badge loading">Verificando...</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Formulario -->
+            <section class="form-section">
+                <h2>➕ Crear Nuevo Producto</h2>
+                <form id="productForm" class="form">
+                    <div class="form-group">
+                        <label for="name">Nombre del Producto *</label>
+                        <input type="text" id="name" name="name" required placeholder="Ej: Desinfectante Multiusos">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Categoría *</label>
+                            <select id="category" name="category" required>
+                                <option value="">Selecciona una categoría</option>
+                                <option value="desinfectantes">Desinfectantes</option>
+                                <option value="detergentes">Detergentes</option>
+                                <option value="papel">Papel</option>
+                                <option value="escobas">Escobas y Cepillos</option>
+                                <option value="bolsas">Bolsas de Basura</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quantity">Cantidad *</label>
+                            <input type="number" id="quantity" name="quantity" required min="1" placeholder="Ej: 50">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="price">Precio Unitario *</label>
+                            <input type="number" id="price" name="price" required step="0.01" min="0" placeholder="Ej: 5.99">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Descripción</label>
+                        <textarea id="description" name="description" placeholder="Describe el producto..." rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <span>➕ Crear Producto</span>
+                    </button>
+                </form>
+
+                <div id="message" class="message"></div>
+            </section>
+
+            <!-- Lista de Productos -->
+            <section class="products-section">
+                <div class="products-header">
+                    <h2>📦 Productos en Inventario</h2>
+                    <div class="header-controls">
+                        <input type="text" id="searchInput" class="search-box" placeholder="🔍 Buscar producto...">
+                        <button id="refreshBtn" class="btn btn-secondary">🔄 Actualizar</button>
+                    </div>
+                </div>
+
+                <div id="loadingSpinner" class="spinner"></div>
+                <div id="productList" class="product-grid"></div>
+            </section>
+        </main>
+
+        <!-- Modal de Edición -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>✏️ Editar Producto</h2>
+                <form id="editForm" class="form">
+                    <input type="hidden" id="editId" name="id">
+
+                    <div class="form-group">
+                        <label for="editName">Nombre del Producto *</label>
+                        <input type="text" id="editName" name="name" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editCategory">Categoría *</label>
+                            <select id="editCategory" name="category" required>
+                                <option value="desinfectantes">Desinfectantes</option>
+                                <option value="detergentes">Detergentes</option>
+                                <option value="papel">Papel</option>
+                                <option value="escobas">Escobas y Cepillos</option>
+                                <option value="bolsas">Bolsas de Basura</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editQuantity">Cantidad *</label>
+                            <input type="number" id="editQuantity" name="quantity" required min="1">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editPrice">Precio Unitario *</label>
+                            <input type="number" id="editPrice" name="price" required step="0.01" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editDescription">Descripción</label>
+                        <textarea id="editDescription" name="description" rows="3"></textarea>
+                    </div>
+
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn btn-primary">💾 Guardar Cambios</button>
+                        <button type="button" class="btn btn-secondary" id="cancelBtn">❌ Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🎓 Taller de Mantenimiento de Software - EPN Event Manager</p>
+            <p>Eventos enviados automáticamente a: http://localhost:3000/events</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
