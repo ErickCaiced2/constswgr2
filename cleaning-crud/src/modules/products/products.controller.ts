@@ -35,6 +35,11 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
+  @Get('stats')
+  getStats() {
+  return this.productsService.getStats();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     const parsedId = parseInt(id, 10);

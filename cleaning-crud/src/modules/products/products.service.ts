@@ -154,6 +154,39 @@ export class ProductsService {
     );
 
     return removedProduct;
-  }
 }
 
+getStats() {
+  const totalProducts = this.products.length;
+
+  const totalQuantity = this.products.reduce(
+    (acc, product) => acc + product.quantity,
+    0,
+  );
+
+  const totalInventoryValue = this.products.reduce(
+    (acc, product) => acc + product.price * product.quantity,
+    0,
+  );
+
+  const averagePrice =
+    totalProducts > 0 ? totalInventoryValue / totalQuantity : 0;
+
+  const productsByCategory = this.products.reduce((acc, product) => {
+    acc[product.category] = (acc[product.category] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  return {
+    totalProducts,
+    totalQuantity,
+    totalInventoryValue,
+    averagePrice,
+    productsByCategory,
+    generatedAt: new Date().toLocaleString('es-EC', {
+      timeZone: 'America/Guayaquil',
+    }),
+    message: 'Reporte estadístico generado correctamente',
+  };
+}
+}
