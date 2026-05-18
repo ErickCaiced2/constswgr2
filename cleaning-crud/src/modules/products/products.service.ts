@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { Product } from './product.model';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -23,37 +23,63 @@ export class ProductsService {
     };
   }
 
-  async create(createProductDto: CreateProductDto): Promise<Product> {
-    const product = new Product(
-      this.nextId++,
-      createProductDto.name,
-      createProductDto.category,
-      createProductDto.quantity,
-      createProductDto.price,
-      createProductDto.description,
+async create(createProductDto: CreateProductDto): Promise<Product> {
+
+  if (!createProductDto.name || createProductDto.name.trim() === '') {
+    throw new BadRequestException(
+      'El nombre del producto es obligatorio',
     );
-
-    this.products.push(product);
-
-    
-    await this.eventEmitter.emitEvent(
-      'CREATE',
-      'product',
-      `Producto de limpieza creado: ${product.name}`,
-      `Se agregó un nuevo producto de categoría "${product.category}" con ${product.quantity} unidades en inventario`,
-      {
-        id: product.id,
-        name: product.name,
-        category: product.category,
-        quantity: product.quantity,
-        price: product.price,
-        metadata: this.getAdaptiveMetadata(),
-      },
-    );
-
-    return product;
   }
 
+  if (
+    !createProductDto.category ||
+    createProductDto.category.trim() === ''
+  ) {
+    throw new BadRequestException(
+      'La categoría del producto es obligatoria',
+    );
+  }
+
+  if (createProductDto.quantity < 0) {
+    throw new BadRequestException(
+      'La cantidad no puede ser negativa',
+    );
+  }
+
+  if (createProductDto.price < 0) {
+    throw new BadRequestException(
+      'El precio no puede ser negativo',
+    );
+  }
+
+  const product = new Product(
+    this.nextId++,
+    createProductDto.name,
+    createProductDto.category,
+    createProductDto.quantity,
+    createProductDto.price,
+    createProductDto.description,
+  );
+
+  this.products.push(product);
+
+  await this.eventEmitter.emitEvent(
+    'CREATE',
+    'product',
+    `Producto de limpieza creado: ${product.name}`,
+    `Se agregó un nuevo producto de categoría "${product.category}" con ${product.quantity} unidades en inventario`,
+    {
+      id: product.id,
+      name: product.name,
+      category: product.category,
+      quantity: product.quantity,
+      price: product.price,
+      metadata: this.getAdaptiveMetadata(),
+    },
+  );
+
+  return product;
+}
 
   findAll(): Product[] {
 
