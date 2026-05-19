@@ -8,29 +8,27 @@ on:
 jobs:
   Build:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         project:
           - cleaning-crud
           - epn-event-manager
       fail-fast: false
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
-      
+
       - name: Install dependencies for ${{ matrix.project }}
         working-directory: ${{ matrix.project }}
         run: npm install
-      
+
       - name: Build ${{ matrix.project }}
         working-directory: ${{ matrix.project }}
         run: npm run build
