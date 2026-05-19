@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EventsService } from '../../../src/modules/events/events.service';
 import { CreateEventDto } from '../../../src/modules/events/dto/create-event.dto';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateEventEntity } from '../../../src/database/entities/create-event.entity';
 import { UpdateEventEntity } from '../../../src/database/entities/update-event.entity';
 import { DeleteEventEntity } from '../../../src/database/entities/delete-event.entity';
@@ -10,10 +9,6 @@ import { QueryEventEntity } from '../../../src/database/entities/query-event.ent
 
 describe('EventsService - DELETE Event Fix', () => {
   let service: EventsService;
-  let createRepo: Repository<CreateEventEntity>;
-  let updateRepo: Repository<UpdateEventEntity>;
-  let deleteRepo: Repository<DeleteEventEntity>;
-  let queryRepo: Repository<QueryEventEntity>;
 
   const mockRepositories = {
     create: {
@@ -62,18 +57,6 @@ describe('EventsService - DELETE Event Fix', () => {
     }).compile();
 
     service = module.get<EventsService>(EventsService);
-    createRepo = module.get<Repository<CreateEventEntity>>(
-      getRepositoryToken(CreateEventEntity),
-    );
-    updateRepo = module.get<Repository<UpdateEventEntity>>(
-      getRepositoryToken(UpdateEventEntity),
-    );
-    deleteRepo = module.get<Repository<DeleteEventEntity>>(
-      getRepositoryToken(DeleteEventEntity),
-    );
-    queryRepo = module.get<Repository<QueryEventEntity>>(
-      getRepositoryToken(QueryEventEntity),
-    );
   });
 
   afterEach(() => {
@@ -436,7 +419,7 @@ describe('EventsService - DELETE Event Fix', () => {
       await service.registerEvent(eventDto);
 
       const createCall = mockRepositories.delete.create.mock.calls[0][0];
-      expect(createCall.payload).toBe(JSON.stringify(null || {}));
+      expect(createCall.payload).toBe(JSON.stringify({}));
     });
 
     it('should handle undefined payload gracefully', async () => {
@@ -454,7 +437,7 @@ describe('EventsService - DELETE Event Fix', () => {
       await service.registerEvent(eventDto);
 
       const createCall = mockRepositories.delete.create.mock.calls[0][0];
-      expect(createCall.payload).toBe(JSON.stringify(undefined || {}));
+      expect(createCall.payload).toBe(JSON.stringify({}));
     });
 
     it('should handle large payload objects', async () => {
