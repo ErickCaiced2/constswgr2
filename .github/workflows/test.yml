@@ -1,0 +1,48 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        project:
+          - cleaning-crud
+          - epn-event-manager
+      fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Install dependencies for ${{ matrix.project }}
+        working-directory: ${{ matrix.project }}
+        run: npm install
+
+      - name: Run tests for ${{ matrix.project }}
+        working-directory: ${{ matrix.project }}
+        run: npm run test
+
+      - name: Generate coverage report for ${{ matrix.project }}
+        working-directory: ${{ matrix.project }}
+        run: npm run test:cov
+        continue-on-error: true
+
+      - name: Upload coverage to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-${{ matrix.project }}
+          path: ${{ matrix.project }}/coverage
+        continue-on-error: true
