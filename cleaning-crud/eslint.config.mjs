@@ -14,19 +14,19 @@ export default [
     files: ['src/**/*.{js,jsx,ts,tsx}', 'test/**/*.{js,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
-      sourceType: 'module',
+      sourceType: 'commonjs',
       globals: {
-        ...globals.browser,
         ...globals.node,
       },
     },
     rules: {
       'no-console': 'off',
       'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-var-requires': 'off',
     },
   },
 ];
