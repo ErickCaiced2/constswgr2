@@ -1,6 +1,6 @@
 // Configuración
 const API_URL = 'http://localhost:3001';
-const HUB_URL = 'http://localhost:3000';
+const HUB_URL = 'http://localhost:3002';
 let editingId = null;
 
 // Elementos del DOM

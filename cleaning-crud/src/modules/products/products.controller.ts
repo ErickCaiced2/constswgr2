@@ -31,22 +31,22 @@ export class ProductsController {
   }
 
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  async findAll() {
+    return await this.productsService.findAll();
   }
 
   @Get('stats')
-  getStats() {
-  return this.productsService.getStats();
+  async getStats() {
+  return await this.productsService.getStats();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     const parsedId = parseInt(id, 10);
     if (isNaN(parsedId)) {
       throw new BadRequestException('El ID debe ser un número válido');
     }
-    return this.productsService.findOne(parsedId);
+    return await this.productsService.findOne(parsedId);
   }
 
   @Patch(':id')
