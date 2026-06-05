@@ -20,6 +20,10 @@ export class ProductEntity {
   @Column({ type: 'text', nullable: true })
   description!: string;
 
+  // [PREVENTIVE] logical deletion flag
+  @Column({ type: 'boolean', default: false })
+  deleted!: boolean;
+
   @CreateDateColumn()
   createdAt!: Date;
 

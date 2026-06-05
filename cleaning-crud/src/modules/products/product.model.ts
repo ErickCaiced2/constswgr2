@@ -7,6 +7,7 @@ export class Product {
   description: string;
   createdAt: Date;
   updatedAt: Date;
+  deleted?: boolean;
 
   constructor(
     id: number,
@@ -24,6 +25,7 @@ export class Product {
     this.description = description;
     this.createdAt = new Date();
     this.updatedAt = new Date();
+    this.deleted = false;
   }
 }
 

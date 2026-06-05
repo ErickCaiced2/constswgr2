@@ -1,0 +1,190 @@
+{
+  "info": {
+    "name": "Cleaning CRUD API",
+    "description": "Collection de pruebas para la API CRUD de gestión de productos de limpieza",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "CREATE - Crear producto",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-FIS-EPN-KEY",
+            "value": "test-key-12345",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Jabón desinfectante\",\n  \"category\": \"Higiene\",\n  \"quantity\": 50,\n  \"price\": 2.50,\n  \"description\": \"Jabón líquido para manos\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3001/products",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["products"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "READ - Listar todos los productos",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-FIS-EPN-KEY",
+            "value": "test-key-12345",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3001/products",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["products"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "READ - Obtener producto por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-FIS-EPN-KEY",
+            "value": "test-key-12345",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3001/products/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["products", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "READ - Estadísticas",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-FIS-EPN-KEY",
+            "value": "test-key-12345",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3001/products/stats",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["products", "stats"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "UPDATE - Actualizar producto",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "X-FIS-EPN-KEY",
+            "value": "test-key-12345",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"quantity\": 75,\n  \"price\": 2.75\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3001/products/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["products", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE - Eliminar producto",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "X-FIS-EPN-KEY",
+            "value": "test-key-12345",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3001/products/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["products", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ERROR - Sin API Key",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3001/products",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["products"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ERROR - ID inválido",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-FIS-EPN-KEY",
+            "value": "test-key-12345",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3001/products/abc",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["products", "abc"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
+

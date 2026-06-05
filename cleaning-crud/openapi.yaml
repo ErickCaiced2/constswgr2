@@ -1,0 +1,115 @@
+openapi: 3.0.3
+info:
+  title: Cleaning CRUD API
+  version: '1.0.0'
+  description: API para gestión de productos de limpieza
+servers:
+  - url: http://localhost:3001
+paths:
+  /products:
+    post:
+      summary: Crear producto
+      security:
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: Producto creado
+        '400':
+          description: Bad Request
+    get:
+      summary: Listar productos
+      security:
+        - apiKey: []
+      responses:
+        '200':
+          description: Lista de productos
+  /products/stats:
+    get:
+      summary: Estadísticas de inventario
+      security:
+        - apiKey: []
+      responses:
+        '200':
+          description: Estadísticas
+  /products/{id}:
+    get:
+      summary: Obtener producto por ID
+      security:
+        - apiKey: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Producto
+        '404':
+          description: Not found
+    patch:
+      summary: Actualizar producto
+      security:
+        - apiKey: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200':
+          description: Producto actualizado
+    delete:
+      summary: Eliminar producto
+      security:
+        - apiKey: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Producto eliminado
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-FIS-EPN-KEY
+  schemas:
+    ProductInput:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          type: string
+        quantity:
+          type: integer
+        price:
+          type: number
+        description:
+          type: string
+      required:
+        - name
+        - category
+        - quantity
+        - price
+

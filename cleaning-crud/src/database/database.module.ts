@@ -3,14 +3,19 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductEntity } from '../modules/products/product.entity';
 import { DatabaseInitializerService } from './database-initializer.service';
 
+// [ADAPTIVE] read DB configuration from environment variables
+const dbPath = process.env.DB_PATH || 'database.sqlite';
+const synchronize = process.env.DB_SYNCHRONIZE === 'true' || true;
+const logging = process.env.DB_LOGGING === 'true' || false;
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'better-sqlite3',
-      database: 'database.sqlite',
+      database: dbPath,
       entities: [ProductEntity],
-      synchronize: true,
-      logging: false,
+      synchronize,
+      logging,
     }),
     TypeOrmModule.forFeature([ProductEntity]),
   ],

@@ -1,7 +1,17 @@
 // Configuración
 const API_URL = 'http://localhost:3001';
 const HUB_URL = 'http://localhost:3002';
+const API_KEY = 'test-key-12345'; // [ADAPTIVE] API key from .env configuration
 let editingId = null;
+
+// [ADAPTIVE] Helper to add API key header
+function getHeaders(includeApiKey = true) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (includeApiKey) {
+    headers['X-FIS-EPN-KEY'] = API_KEY;
+  }
+  return headers;
+}
 
 // Elementos del DOM
 const productForm = document.getElementById('productForm');
@@ -64,7 +74,7 @@ productForm.addEventListener('submit', async (e) => {
         loadingSpinner.classList.add('active');
         const res = await fetch(`${API_URL}/products`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getHeaders(true),
             body: JSON.stringify(product),
         });
 
@@ -84,7 +94,9 @@ productForm.addEventListener('submit', async (e) => {
 async function loadProducts() {
     try {
         loadingSpinner.classList.add('active');
-        const res = await fetch(`${API_URL}/products`);
+        const res = await fetch(`${API_URL}/products`, {
+            headers: getHeaders(true),
+        });
 
         if (!res.ok) throw new Error('Error al cargar productos');
 
@@ -187,7 +199,7 @@ editForm.addEventListener('submit', async (e) => {
         loadingSpinner.classList.add('active');
         const res = await fetch(`${API_URL}/products/${editingId}`, {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getHeaders(true),
             body: JSON.stringify(updates),
         });
 
@@ -211,6 +223,7 @@ async function deleteProduct(id, name) {
         loadingSpinner.classList.add('active');
         const res = await fetch(`${API_URL}/products/${id}`, {
             method: 'DELETE',
+            headers: getHeaders(true),
         });
 
         if (!res.ok) throw new Error('Error al eliminar producto');
