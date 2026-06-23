@@ -1,0 +1,34 @@
+name: Lint
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Lint:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        project:
+          - cleaning-crud
+          - epn-event-manager
+      fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies for ${{ matrix.project }}
+        working-directory: ${{ matrix.project }}
+        run: npm install
+
+      - name: Lint ${{ matrix.project }}
+        working-directory: ${{ matrix.project }}
+        run: npm run lint
